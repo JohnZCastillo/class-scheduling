@@ -5,10 +5,8 @@ function create(name){
     return{
         subject: name,
         day: '',
-        startHour:0,
-        startMinute: 0,
-        endHour: 0,
-        endMinute: 0,
+        start: 0,
+        end: 0,
     }
 }
 
@@ -27,14 +25,10 @@ function overlap(time1,time2){
     
     if(time1.day != time2.day)return false
 
-    start = []
-    end = []
+    start = [time1.start,time2.start]
+    end = [time1.end,time2.end]
 
-    start[0] = (Time.convert(time1.startHour))+time1.startMinute
-    start[1] = (Time.convert(time2.startHour))+time2.startMinute
-    end[0] =  (Time.convert(time1.endHour))+time1.endMinute
-    end[1] =  (Time.convert(time2.endHour))+time2.endMinute
-   
+
     //equal
    
     if(start[0] === start[1] && end[0] === end[1])  return true
@@ -63,8 +57,7 @@ function overlap(time1,time2){
     
 */
 function leap(time,unit){
-    if(!Time.validate(time))console.log('Opps leaptime has input of 24hour format')
-    return time + unit*100
+    return time + (unit*100)
 }
 
 /*
@@ -76,37 +69,24 @@ function leap(time,unit){
 */
 function tempMeet({name},day,start,unit){
     const temp = create(name)
-    const tempLeap = leap(start,unit)
-        temp.day = day
-        //get hour
-        temp.startHour = start/100
-        //get minute
-        temp.startMinute = start%100
-        //get hour
-        temp.endHour = tempLeap/100
-        //end hour
-        temp.endMinute = tempLeap%100
-
+    temp.day = day
+    temp.start = start
+    temp.end = leap(start,unit)
     return temp
 }
 
 
 module.exports = {create,overlap,leap,tempMeet}
 
-// const time1 = create();
-// const time2 = create();
+// const time1 = create('math');
+// const time2 = create('english');
 
 // time1.day = 'monday'
-// time1.startHour = 6
-// time1.startMinute = 0
-// time1.endHour = 9
-// time1.endMinute = 0
-
+// time1.start = 630
+// time1.end = 800
 
 // time2.day = 'monday'
-// time2.startHour = 6
-// time2.startMinute = 0
-// time2.endHour = 9
-// time2.endMinute = 0
+// time2.start = 530
+// time2.end = 700
 
 // console.log(overlap(time1,time2))

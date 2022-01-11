@@ -1,50 +1,30 @@
-/*
-    convert san time na 24 format sa * 100
-    pag may munute na kaupo ma return 0
-    or pag dili naka 24 format
-*/
-function convert(hour){
-    if(!validate(hour) || !isMinute(hour)) return hour*100
-}
-
-/*  
-    check if time is (24 hours)*100 format
-    example: 7:00 false
-    exmaple: 700  true 
- */ 
-function validate(time){
-    return time > 100
-}
-function isMinute(time){
-    return time%100 > 0
-}
-
-/*
-    return san time na naka *100 format
-    pag naka 24 format then return empty na array
-*/
-
-function getTime(startTime,endTime){
+function getTime(start,end,interval){
     
-    if(validate(startTime)){
-        console.log('start time is not in 24 Hour format')
-        return []
+    const time = []
+    
+    const startHour = Math.floor(start/100)
+    const startMinute = start%100
+
+    const endHour =  Math.floor(end/100)
+    const endMinute = end%100
+    //para intra ang start time
+    time.push(start)
+
+    for (let hour = startHour; hour < endHour; hour++){
+       for (let minute = startMinute; minute <= 60; minute+=interval) {
+            if(minute == 0) continue
+            if(minute == 60){
+                time.push((hour*100)+100)      
+            }else{
+                    time.push((hour*100)+minute)
+            }
+           if(hour == endHour && minute == endMinute)break
+       }  
     }
 
-    if(validate(endTime)){
-        console.log ('end time is not in 24 Hour format')
-        return []
-    }
-
-    const timeHolder = []
-    const minuteInterval = 30
-
-    for (let start = startTime; start <= endTime; start++) {
-        timeHolder.push(convert(start)) 
-        if(start != endTime) timeHolder.push(convert(start) + minuteInterval)
-    }
-    return timeHolder
+    return time
 }
 
 
-module.exports = {convert,validate,getTime}
+//console.log(getTime(600,1600,15))
+module.exports = {getTime}

@@ -3,7 +3,7 @@ const Time = require('./time')
 const Data = require('./data')
 
 function mapDay(dayname){
-   const days = ['monday','tuesday','wednesday','thursday','friday','saturday']
+   const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
    for (let index = 0; index < days.length; index++) {
      if(dayname ==  days[index]){
         return index
@@ -20,7 +20,10 @@ function subject(name){
       blockTime: [0,0,0,0,0,0,0,],//monday, tuesday... represents the subject being teacher the samte time and day
       proceed: function(meeting){
          //kapag ang teahcer usad lang then regualr conflict na na inverted
-         if(this.teacher <= 1) return !this.conflict(meeting)
+         if(this.teacher <= 1){
+            console.log('proceed caled but returning conflict')
+            return !this.conflict(meeting)
+         } 
          const day = mapDay(meeting.day);
 
          
@@ -48,16 +51,16 @@ const math = subject('math')
 const english = subject('english')
 const pe = subject('pe')
 
-english.teacher = 2;
-math.teacher = 3
-pe.teacher = 2
+english.teacher = 1;
+math.teacher = 1
+pe.teacher = 1
 
 //const days =  ['monday','tuesday','wednesday','thursday','friday','saturday']
 const days =  ['monday','tuesday',]
-const hours = Time.getTime(6,16)
-const sections = [s1,s2,s3,s4,s5,s6,s7]
-//const sections = [s1,s2,s3,s4]
-const subjects = [math,english,pe]
+const hours = Time.getTime(600,1600,15)
+//const sections = [s1,s2,s3,s4,s5,s6,s7]
+const sections = [s1,s2]
+const subjects = [math,english]
 
 
 // console.log(sections[0])
@@ -73,7 +76,6 @@ sections.forEach(section =>{
    })
 })
 
-
 console.log(hours)
 
 days.forEach(day => {
@@ -84,10 +86,9 @@ days.forEach(day => {
                if(!subject.exist(section)){
                   const subjectTemp = Meet.tempMeet(subject,day,hour,3)
                   const sectionTemp = Meet.tempMeet(section,day,hour,3)
-                  console.log(subjectTemp)
                   if(!section.conflict(subjectTemp)){
                      if(subject.proceed(sectionTemp)){
-                         if(subjectTemp.endHour*100 <= hours[hours.length-1]){
+                         if(subjectTemp.end <= hours[hours.length-1]){
                            section.add(subjectTemp)
                            subject.add(sectionTemp)
                         }
@@ -101,6 +102,7 @@ days.forEach(day => {
 })
 
 
+
 // sections.forEach(section =>{
 //    console.log(`===========${section.name}============`)
 //   section.schedule.forEach( sched =>{
@@ -111,9 +113,9 @@ days.forEach(day => {
    
 // })
 
-// subjects .forEach(sub =>{
-//    console.log(`===========${sub.name}============`)
-//    console.log(sub.schedule)
-// })
+subjects .forEach(sub =>{
+   console.log(`===========${sub.name}============`)
+   console.log(sub.schedule)
+})
 
 // console.log(s1.schedule)
