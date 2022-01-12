@@ -4,6 +4,7 @@ const Time = require('./time')
 function create(name){
     return{
         subject: name,
+        purpose: '',
         day: '',
         start: 0,
         end: 0,
