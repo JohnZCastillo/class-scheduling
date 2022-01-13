@@ -35,26 +35,27 @@ t2.workingHours = hours
 
 const teachers = [t1,t2]
 
-let found = false
 
-for (const subject of subjects) {
+for (const section of sections) {  
+    for (const subject of subjects) {
     
     const meeting = Data.meet(subject)
-    const meetingPool = Data.timePool(days,hours,meeting)
-    
-    for (const section of sections) {        
+    const meetingPool = Data.timePool(days,hours,meeting)     
     
         if(!section.hasSubject(subject)) continue
-    
-
         if(section.inSchedule(meeting)) continue
 
         for (const teacher of teachers) {
             for (const meet of meetingPool) {
+               
                 if(!section.conflict(meet) && !teacher.conflict(meet)){
+                    
                     if(teacher.insert(meet)){
+                       
                         meet.teacher = teacher.name
                         meet.section = section.name
+                        
+                     
                         section.schedule.push(meet)
                         break
                     }
@@ -64,56 +65,14 @@ for (const subject of subjects) {
     }
 }
 
-
-// for (const section of sections) {
-//     for(const subject of subjects){
-
-//         if(!section.hasSubject(subject)) continue
-    
-//         for (const teacher of teachers) {
-            
-//             if(!teacher.hasSubject(subject)) continue
-
-//             for (const day of days) {
-//                 for (const hour of hours) {
-                    
-//                     const meet = Data.meet(subject.name)
-//                     meet.teacher = teacher.name 
-//                     meet.section = section.name
-//                     meet.day = day
-//                     meet.start = hour
-//                     meet.setEnd(subject.units)
-//                     meet.span = subject.units
-                    
-//                     if(section.conflict(meet)) continue
-//                     if(teacher.conflict(meet)) continue
-                    
-//                     if(teacher.insert(meet)){
-//                         section.schedule.push(meet)   
-//                     }
-                    
-                  
-//                 }
-//             }
-
-
-//         }
-        
-//     }  
-// }
-
-function sched({subject,teacher,section,day,start,end}){
-   return {subject,teacher,section,day,start,end}
-}
+//console.log(s1.schedule)
 
 const dataToExcel = []
 
-sections.forEach(section => {
-    section.schedule.forEach(schedule => {
-      dataToExcel.push(sched(schedule))
-        //console.log(schedule)   
-    })
-})
+// console.log(sections[1].schedule)
+// for (const section of sections) {
+//     console.log(section.schedule)
+// }
 
 
 Excel.createExcel(dataToExcel)

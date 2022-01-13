@@ -77,7 +77,7 @@ function teacher(name){
                     return false
                 }
                 
-                this.load.set(meeting.subject,this.load.get(meeting.subject += 1))
+                this.load.set(meeting.subject,this.load.get(meeting.subject)+1)
                 this.schedule.push(meeting)
                 return true
             }
@@ -143,6 +143,8 @@ function meet({name,units}){
 function timePool(days,hours,meeting){
     const pool = []
     
+    console.log(meeting.subject)
+
     for (const day of days) {
         for (const hour of hours) {
                    
