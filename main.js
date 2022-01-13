@@ -42,15 +42,12 @@ for (const section of sections) {
     const meeting = Data.meet(subject)
     const meetingPool = Data.timePool(days,hours,meeting)     
     
-        if(!section.hasSubject(subject)) continue
-        if(section.inSchedule(meeting)) continue
-
         for (const teacher of teachers) {
             for (const meet of meetingPool) {
                
                 if(!section.conflict(meet) && !teacher.conflict(meet)){
                     
-                    if(!section.inSchedule(meet)){
+                    if(!section.inSchedule(meet) && teacher.hasSubject(subject)){
                         if(teacher.insert(meet)){
                             meet.teacher = teacher.name
                             meet.section = section.name
@@ -68,8 +65,6 @@ for (const section of sections) {
 function getImportant({subject,teacher,section,day,start,end,span}){
     return {subject,teacher,section,day,start,end,span}
 }
-//console.log(s1.schedule)
-
 
 const dataToExcel = []
 
@@ -80,5 +75,5 @@ for (const section of sections) {
         dataToExcel.push(getImportant(schedule))
     }
 }
-console.log(s3.schedule)
+
 Excel.createExcel(dataToExcel)
