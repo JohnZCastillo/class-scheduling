@@ -59,7 +59,7 @@ function teacher(name){
         teachingLoad: 8, //units per day
         subjectAvailability: function(){
             let total = this.teachingLoad * this.workingDays.length
-            return Math.round((total / 3) / (this.subject.length))
+            return Math.floor((total / 3) / (this.subject.length))
         },
         insert:  function(meeting){
 
