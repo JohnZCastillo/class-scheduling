@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JohnZCastilllo/class-scheduling/issues"
   },
-  "homepage": "https://github.com/JohnZCastilllo/class-scheduling#readme"
+  "homepage": "https://github.com/JohnZCastilllo/class-scheduling#readme",
+  "dependencies": {
+    "msexcel-builder": "^0.0.2"
+  }
 }
