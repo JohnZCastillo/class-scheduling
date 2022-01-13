@@ -1,5 +1,6 @@
 const Data = require('./data')
 const Time = require('./time')
+const Excel = require('./excel')
 
 const t1 = Data.teacher('Sir John Castillo')
 const t2 = Data.teacher('Sir James Castillo')
@@ -36,26 +37,25 @@ const teachers = [t1,t2]
 
 let found = false
 
-for (const section of sections) {
-    for (const subject of subjects) {
-        
+for (const subject of subjects) {
+    
+    const meeting = Data.meet(subject)
+    const meetingPool = Data.timePool(days,hours,meeting)
+    
+    for (const section of sections) {        
+    
         if(!section.hasSubject(subject)) continue
     
-        const meeting = Data.meet(subject)
-        const meetingPool = Data.timePool(days,hours,meeting)
 
         if(section.inSchedule(meeting)) continue
 
-        found = false
         for (const teacher of teachers) {
-            if(found) break
             for (const meet of meetingPool) {
                 if(!section.conflict(meet) && !teacher.conflict(meet)){
                     if(teacher.insert(meet)){
                         meet.teacher = teacher.name
                         meet.section = section.name
                         section.schedule.push(meet)
-                        found = true
                         break
                     }
                 }
@@ -102,4 +102,18 @@ for (const section of sections) {
 //     }  
 // }
 
-console.log(s3.schedule)
+function sched({subject,teacher,section,day,start,end}){
+   return {subject,teacher,section,day,start,end}
+}
+
+const dataToExcel = []
+
+sections.forEach(section => {
+    section.schedule.forEach(schedule => {
+      dataToExcel.push(sched(schedule))
+        //console.log(schedule)   
+    })
+})
+
+
+Excel.createExcel(dataToExcel)

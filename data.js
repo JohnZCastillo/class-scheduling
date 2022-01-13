@@ -103,12 +103,11 @@ function meet({name,units}){
         start: 0,
         end: 0,
         span: units,
-        leap: function(units){
+        leap: function(){
             if(this.start == 0){
                 throw new Error('start not set')
             }
-            console.log(this.start + (units*100))
-            this.end = this.start + (units*100)
+            this.end = this.start + (this.span*100)
             return true
         },
         overlap:  function(anotherMeet){
@@ -141,25 +140,33 @@ function meet({name,units}){
     }
 }
 
-function timePool(days,hours,meet){
+function timePool(days,hours,meeting){
     const pool = []
-   
+    
     for (const day of days) {
-        const clone = {...meet}
         for (const hour of hours) {
-            
-            if(hour + clone.span*100 > hours[hours.length-1]){
+                   
+            if(hour + (meeting.span*100) > hours[hours.length-1]){
                 break
             }
 
-            clone.day = day
-            clone.start = hour
-            clone.leap(meet.span)
+         
+            const tempMeet = meet({name: meeting.subject,units: meeting.span})
+            tempMeet.day = day
+            tempMeet.start = hour
+            tempMeet.leap()
             
-            pool.push(clone)
+         //   console.log(clone)
+            pool.push(tempMeet)
+
         }
     }
+   
     return pool
 }
+// const Time = require('./time')
+
+// const me = meet({name: 'sample',units: 3})
+// console.log(timePool(Time.getDays(0,4),Time.getTime(700,1600,30),me))
 
 module.exports = {section,teacher,subject,meet,timePool}

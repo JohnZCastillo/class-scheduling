@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/JohnZCastilllo/class-scheduling#readme",
   "dependencies": {
-    "msexcel-builder": "^0.0.2"
+    "xlsx": "^0.17.5"
   }
 }
