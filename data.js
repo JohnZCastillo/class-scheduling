@@ -56,7 +56,7 @@ function teacher(name){
         workingHours: [],
         subject: [],
         schedule: [],
-        teachingLoad: 9, //units per day
+        teachingLoad: 8, //units per day
         subjectAvailability: function(){
             let total = this.teachingLoad * this.workingDays.length
             return Math.round((total / 3) / (this.subject.length))
