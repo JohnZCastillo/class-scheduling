@@ -54,8 +54,6 @@ for (const section of sections) {
                        
                         meet.teacher = teacher.name
                         meet.section = section.name
-                        
-                     
                         section.schedule.push(meet)
                         break
                     }
@@ -65,14 +63,21 @@ for (const section of sections) {
     }
 }
 
+function getImportant({name}){
+
+}
 //console.log(s1.schedule)
+
 
 const dataToExcel = []
 
-// console.log(sections[1].schedule)
-// for (const section of sections) {
-//     console.log(section.schedule)
-// }
+//export to excel
+
+for (const section of sections) {
+    for (const schedule of section.schedule) {
+        console.log(schedule)
+    }
+}
 
 
 Excel.createExcel(dataToExcel)
