@@ -18,7 +18,7 @@ function utility(){
         },
         inSchedule: function(meeting){
             for (const schedule of this.schedule) {
-                if(schedule.schedule == meeting.subject){
+                if(schedule.subject == meeting.subject){
                     return  true
                 }
             }
@@ -59,7 +59,7 @@ function teacher(name){
         teachingLoad: 9, //units per day
         subjectAvailability: function(){
             let total = this.teachingLoad * this.workingDays.length
-            return Math.random(total / (this.subject.length * 3))
+            return Math.round((total / 3) / (this.subject.length))
         },
         insert:  function(meeting){
 
@@ -82,7 +82,7 @@ function teacher(name){
                 return true
             }
 
-            this.load.set(meeting.subject,1)
+            this.load.set(meeting.subject,1)//1 1 meeting
             this.schedule.push(meeting)
             return true
         },
@@ -94,16 +94,23 @@ function between(min,target,max){
     return min < target && target < max
 }
 
-function meet(name){
-    return {
+function meet({name,units}){
+    return{
         subject: name,
         teacher: '',
         section: '',
-        room: '',
-        span: 3, //unit, or the span of the meeting
         day: '',
         start: 0,
         end: 0,
+        span: units,
+        leap: function(units){
+            if(this.start == 0){
+                throw new Error('start not set')
+            }
+            console.log(this.start + (units*100))
+            this.end = this.start + (units*100)
+            return true
+        },
         overlap:  function(anotherMeet){
             
             if(this.day != anotherMeet.day) return false
@@ -130,18 +137,29 @@ function meet(name){
             }
 
             return false
-        },
-        setEnd: function(unit){
-            
-            if(this.start == 0){
-                throw new Error('meeting start hour is not set')
-            }
-
-            this.end = this.start + (unit * 100)
-
         }
     }
 }
 
+function timePool(days,hours,meet){
+    const pool = []
+   
+    for (const day of days) {
+        const clone = {...meet}
+        for (const hour of hours) {
+            
+            if(hour + clone.span*100 > hours[hours.length-1]){
+                break
+            }
 
-module.exports = {section,teacher,subject,meet}
+            clone.day = day
+            clone.start = hour
+            clone.leap(meet.span)
+            
+            pool.push(clone)
+        }
+    }
+    return pool
+}
+
+module.exports = {section,teacher,subject,meet,timePool}
