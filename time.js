@@ -25,6 +25,9 @@ function getTime(start,end,interval){
     return time
 }
 
+function getDays(start,end){
+    const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+    return days.filter((element,index) => index >= start && index <= end)
+}
 
-//console.log(getTime(600,1600,15))
-module.exports = {getTime}
+module.exports = {getTime,getDays}

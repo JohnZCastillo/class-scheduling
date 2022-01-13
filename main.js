@@ -12,6 +12,22 @@ function mapDay(dayname){
    return -1
 }
 
+// function teacher(name){
+//    return{
+//       ...Data.data(name),
+//       subjects: [],
+//       loadTracker: [], //subject day availableUnit
+//       workDays = [],
+//       totalLoad: function(){
+//          let total = 0
+//             this.subjects.forEach(subject =>{
+//                total += subject.unit
+//             })
+//          return total
+//       },
+//    }
+// }
+
 function subject(name){
    return{
       ...Data.data(name),
@@ -130,8 +146,9 @@ days.forEach(day => {
    hours.forEach( hour =>{
       sections.forEach(section =>{
          subjects.forEach(subject =>{
-            if(!section.exist(subject)){//ok
-               if(!subject.exist(section)){
+            if(!section.meetingExist(subject)){//ok
+               if(!subject.meetingExist(section)){
+
                   const subjectTemp = Meet.tempMeet(subject,day,hour,subject.unit)
                   const sectionTemp = Meet.tempMeet(section,day,hour,subject.unit)
 
