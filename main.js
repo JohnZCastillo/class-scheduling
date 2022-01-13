@@ -50,21 +50,23 @@ for (const section of sections) {
                
                 if(!section.conflict(meet) && !teacher.conflict(meet)){
                     
-                    if(teacher.insert(meet)){
-                       
-                        meet.teacher = teacher.name
-                        meet.section = section.name
-                        section.schedule.push(meet)
-                        break
+                    if(!section.inSchedule(meet)){
+                        if(teacher.insert(meet)){
+                            meet.teacher = teacher.name
+                            meet.section = section.name
+                            section.schedule.push(meet)
+                            break
+                        }
                     }
+                    
                 }
             }
         }
     }
 }
 
-function getImportant({name}){
-
+function getImportant({subject,teacher,section,day,start,end,span}){
+    return {subject,teacher,section,day,start,end,span}
 }
 //console.log(s1.schedule)
 
@@ -75,9 +77,8 @@ const dataToExcel = []
 
 for (const section of sections) {
     for (const schedule of section.schedule) {
-        console.log(schedule)
+        dataToExcel.push(getImportant(schedule))
     }
 }
-
-
+console.log(s3.schedule)
 Excel.createExcel(dataToExcel)

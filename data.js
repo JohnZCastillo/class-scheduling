@@ -143,16 +143,13 @@ function meet({name,units}){
 function timePool(days,hours,meeting){
     const pool = []
     
-    console.log(meeting.subject)
-
     for (const day of days) {
         for (const hour of hours) {
                    
             if(hour + (meeting.span*100) > hours[hours.length-1]){
                 break
             }
-
-         
+     
             const tempMeet = meet({name: meeting.subject,units: meeting.span})
             tempMeet.day = day
             tempMeet.start = hour
